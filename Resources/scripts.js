@@ -3,6 +3,7 @@ var dragElement = ""; //The element being dragged is stored globally for easier 
 var users = {}; //Stores the users in a global variable.
 var modules = {}; //The modules are store in here. It loads globally so that a new template can be applied and saved easier. 
 var initialized = false; //Used when the user tries to change template after already having opened one.
+var fso = new ActiveXObject("Scripting.FileSystemObject"); //Used for saving the modules.
 
 function loadDocument() {
   document.getElementById("modSelect").selectedIndex = 0; //Makes the dropdown start with the "Choose a Template" text. Otherwise refreshing page makes weirdness.
@@ -267,16 +268,13 @@ function saveTemplate(loaded) { //Runs error check and saves template if no erro
   if (errors.length > 1) alert(errors); //Display errors if any are found.
   else { //If no errors, the template will be saved.
     modules[fileName.value] = drop.value; //Updates modules with the file and the dropdown value.
-    var netModule = top.netPath + "/Widgets/Auto Mailer/Modules/" + fileName.value + ".txt";
-    var locModule = "C:/Web Tools/Resources/Widgets/Auto Mailer/Modules/" +fileName.value + ".txt";
-    var netList = parent.netPath + "/Widgets/Auto Mailer/Modules/modulesList.txt";
-    var locList = "C:/Web Tools/Resources/Widgets/Auto Mailer/Modules/modulesList.txt";
+    var dir = location.href.replace(/%20/g, " ").replace("file:///","").replace("Auto Mailer.hta", "");
+    var locModule = dir + "Modules/" + fileName.value + ".txt";
+    var locList = dir + "Modules/modulesList.txt";
     var templateString = JSON.stringify(template);
     var modulesString = JSON.stringify(modules);
-    top.saveFile(netModule, templateString);
-    top.saveFile(locModule, templateString);
-    top.saveFile(netList, modulesString);
-    top.saveFile(locList, modulesString);
+    saveFile(locModule, templateString);
+    saveFile(locList, modulesString);
     location.reload();
   }
 }
@@ -545,10 +543,10 @@ function saveUsers() { //Packages the users into a JSON and saves it with active
     users[symbols[x].value] = emails[x].value;
   }
   var usersString = JSON.stringify(users);
-  var netPath = top.netPath + "/Widgets/Auto Mailer/users.txt";
-  var locPath = "C:/Web Tools/Resources/Widgets/Auto Mailer/users.txt";
-  top.saveFile(netPath, usersString);
-  top.saveFile(locPath, usersString);
+  var dir = location.href.replace(/%20/g, " ").replace("file:///","").replace("Auto Mailer.hta", "");
+  var locPath = dir + "users.txt";
+  saveFile(netPath, usersString);
+  saveFile(locPath, usersString);
 }
 
 function templateManager() {
@@ -620,4 +618,10 @@ function templateManager() {
   div = document.createElement("DIV");
   div.style.height = "50px";
   options.appendChild(div); //A spacer for when the table needs to be scrolled.
+}
+
+function saveFile(path, data) {
+  var textFile = fso.CreateTextFile(path, true, true);
+  textFile.Write(data);
+  textFile.Close();
 }
