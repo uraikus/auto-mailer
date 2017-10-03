@@ -7,7 +7,7 @@ var initialized = false; //Used when the user tries to change template after alr
 function loadDocument() {
   document.getElementById("modSelect").selectedIndex = 0; //Makes the dropdown start with the "Choose a Template" text. Otherwise refreshing page makes weirdness.
   include("Modules/modulesList.txt", "initializeModules");
-  include("users.txt", "assignUsers"); //Grabs the users json file and loads it as a global variable.
+  include("Resources/users.txt", "assignUsers"); //Grabs the users json file and loads it as a global variable.
 }
 
 function include(path, action) { //Include function for template dependencies.
