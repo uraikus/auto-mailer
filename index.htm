@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Auto Mailer</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8">
+    <script src='scripts.js'></script>
+    <link rel='stylesheet' type='text/css' href='styles.css'>
+  </head>
+  <body onload='loadDocument()'>
+    <div id='toolbox'>
+      <b id='autoMailer'>Auto-Mailer:</b>
+      <select onchange="loadModule()" id='modSelect'>
+      </select>
+      <input type='button' value='Generate Email' disabled='true' id='emailBut' onclick='emailize()'>
+      <input type='button' value='Templates' onclick='showMenu("options"); templateManager();' class='optBut'>
+      <input type='button' value='Email Symbols' onclick='showMenu("options"); loadUsers();' class='optBut'>
+    </div>
+    
+    <div id='main'>
+    </div>
+    
+    <div id='options'>
+    </div>
+    <div id='prefabContainer'>
+      <input list='allPrefabs' id='activePrefab' oninput='loadPrefabData()'>
+      <input type='button' value='Delete Preset' onclick='deletePreset()'>
+      <datalist id='allPrefabs'>
+      </datalist>
+      <hr>
+      <div id='prefabInputs'></div>
+      <input type='button' value='Add Preset Value' onclick='addPrefabValue()' id='addValueButton'>
+    </div>
+    <div id='blur' onclick='hideMenu()'>
+    </div>
+    
+    <div id='includes' hidden>
+    </div>
+    <datalist id='userslist'>
+    </datalist>
+  </body>
+</html>
